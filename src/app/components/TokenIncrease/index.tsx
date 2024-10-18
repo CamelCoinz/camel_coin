@@ -7,8 +7,8 @@ import Countdown from "./Countdown";
 
 export const TokenIncrease = () => {
   const [address] = useState("0xd0657EB6E73768738cF7982bE7564d53d6092f4c");
-  const [usdtValue, setUsdtValue] = useState<number>();
-  const [camelCoinValue, setCamelCoinValue] = useState<number>();
+  const [usdtValue, setUsdtValue] = useState<number>(1);
+  const [camelCoinValue, setCamelCoinValue] = useState<number>(100000);
 
   const exchangeRate = 100000;
 
