@@ -18,7 +18,7 @@ export const Tokenomics = () => {
           <div className="sr-only">Total Supply: 1,000,000,000 Camel Coins</div>
         </div>
         <div className="flex flex-wrap gap-5 justify-center mt-7 lg:mt-14">
-          <TokenBox percent="5%" title="Seed">
+          <TokenBox percent="25%" title="Presale">
             <Image
               alt="me"
               width={50}
@@ -27,8 +27,8 @@ export const Tokenomics = () => {
               className="object-cover object-center w-16 lg:w-[90px] absolute -left-5 lg:-left-9 -bottom-4"
             />
           </TokenBox>
-          <TokenBox percent="25%" title="Presale" />
-          <TokenBox percent="25%" title="Liquidity">
+          <TokenBox percent="25%" title="Liquidity" />
+          <TokenBox percent="20%" title="Marketing">
             <Image
               alt="me"
               width={50}
@@ -37,7 +37,6 @@ export const Tokenomics = () => {
               className="object-cover object-center lg:w-[70px] absolute lg:-right-7 -right-5 -bottom-2"
             />
           </TokenBox>
-          <TokenBox percent="20%" title="Marketing" />
           <TokenBox percent="15%" title="Rewards" />
 
           <TokenBox percent="10%" title="Treasury">

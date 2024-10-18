@@ -8,7 +8,7 @@ interface props {
 export const TokenBox: React.FC<props> = ({ percent, title, children }) => {
   return (
     <div>
-      <div className="bg-[url('/Vectors/paper.webp')] bg-contain bg-no-repeat w-[170px] h-[120px]  relative flex items-center justify-center animate-zoom">
+      <div className="bg-[url('/Vectors/paper.webp')] bg-contain bg-no-repeat w-[190px] h-[140px]  relative flex items-center justify-center animate-zoom">
         <div className="md:text-[40px] text-4xl font-extrabold">{percent}</div>
         {children}
       </div>

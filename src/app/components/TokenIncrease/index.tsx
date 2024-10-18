@@ -7,6 +7,24 @@ import Countdown from "./Countdown";
 
 export const TokenIncrease = () => {
   const [address] = useState("0xd0657EB6E73768738cF7982bE7564d53d6092f4c");
+  const [usdtValue, setUsdtValue] = useState<number>();
+  const [camelCoinValue, setCamelCoinValue] = useState<number>();
+
+  const exchangeRate = 100000;
+
+  const handleUSDTChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const usdt = parseFloat(event.target.value) || 0;
+    setUsdtValue(usdt);
+    setCamelCoinValue(usdt * exchangeRate);
+  };
+
+  const handleCamelCoinChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const camelCoins = parseFloat(event.target.value) || 0;
+    setCamelCoinValue(camelCoins);
+    setUsdtValue(camelCoins / exchangeRate);
+  };
 
   const handleCopy = () => {
     navigator.clipboard.writeText(address);
@@ -20,6 +38,11 @@ export const TokenIncrease = () => {
     });
   };
 
+  const formatNumber = (value: number | undefined): string => {
+    return new Intl.NumberFormat().format(value || 0);
+  };
+
+  
   return (
     <div className="bg-[url('/Vectors/desert.webp')] bg-cover bg-no-repeat w-100   relative flex justify-center py-9">
       <span
@@ -153,16 +176,17 @@ export const TokenIncrease = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-7 mt-3">
+              {/* USDT Input */}
               <div>
                 <label
                   htmlFor="to_pay"
-                  className="block mb-1 text-sm md:text-lg  text-brown_34"
+                  className="block mb-1 text-sm md:text-lg text-brown_34"
                 >
                   USDT you pay:
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none">
-                    <Image
+                    <img
                       width={20}
                       height={20}
                       className="w-10"
@@ -171,28 +195,31 @@ export const TokenIncrease = () => {
                     />
                   </div>
                   <input
-                    type="number"
+                    type="text" // Change to text for better formatting
                     id="to_pay"
                     aria-describedby="helper-text-explanation"
-                    className="bg-white text-gray-400 outline-none text-xl rounded-xl  block w-full ps-16 py-3 md:py-5"
+                    className="bg-white text-gray-400 outline-none text-xl rounded-xl block w-full ps-16 py-3 md:py-5"
                     placeholder="0"
-                    min={0}
+                    value={formatNumber(usdtValue)}
+                    onChange={handleUSDTChange}
                   />
                   <div className="text-[#627D2B] font-bold absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 text-sm pointer-events-none">
                     Max
                   </div>
                 </div>
               </div>
+
+              {/* Camel Coin Input */}
               <div>
                 <label
                   htmlFor="to_get"
-                  className="block mb-1  text-sm md:text-lg font-bold text-brown_34"
+                  className="block mb-1 text-sm md:text-lg font-bold text-brown_34"
                 >
                   $CAMEL you get:
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none">
-                    <Image
+                    <img
                       width={20}
                       height={20}
                       className="w-10"
@@ -201,12 +228,13 @@ export const TokenIncrease = () => {
                     />
                   </div>
                   <input
-                    type="number"
+                    type="text" // Change to text for better formatting
                     id="to_get"
                     aria-describedby="helper-text-explanation"
-                    className="bg-white text-gray-400 outline-none text-xl rounded-xl  block w-full ps-16 py-3 md:py-5"
+                    className="bg-white text-gray-400 outline-none text-xl rounded-xl block w-full ps-16 py-3 md:py-5"
                     placeholder="0"
-                    min={0}
+                    value={formatNumber(camelCoinValue)}
+                    onChange={handleCamelCoinChange}
                   />
                   <div className="text-[#627D2B] font-bold absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 text-sm pointer-events-none">
                     Max
@@ -258,10 +286,7 @@ export const TokenIncrease = () => {
                 <span className="sr-only">copy</span>
               </button>
             </div>
-            <div className="text-[#6F3400] my-3 underline underline-offset-2 font-bold text-sm md:text-xl">
-              Not enough crypto? Buy with card now!
-            </div>
-            <p className="text-[#444444] text-xs">
+            <p className="text-[#444444] text-xs mt-3">
               I have done my own research and understand that investing in
               cryptocurrency involves risk and may result in loss of investment.
               By participating in the presale, I fully agree to the terms of the

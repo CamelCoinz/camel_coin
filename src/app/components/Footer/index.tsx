@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 export const Footer = () => {
@@ -14,7 +15,10 @@ export const Footer = () => {
             by following us on social media:
           </p>
           <div className="grid grid-cols-2 place-items-center lg:grid-cols-2 mt-10 gap-y-2 md:gap-3">
-            <div className="bg-[url('/Vectors/X.webp')] hover:scale-90 duration-300 cursor-pointer text-xs lg:text-lg w-44 h-10 lg:w-80 lg:h-20 bg-contain bg-no-repeat flex gap-x-2 justify-center items-center text-[#7C3B1D] font-bold">
+            <Link
+              href="https://x.com/CamelCoinz"
+              className="bg-[url('/Vectors/X.webp')] hover:scale-90 duration-300 cursor-pointer text-xs lg:text-lg w-44 h-10 lg:w-80 lg:h-20 bg-contain bg-no-repeat flex gap-x-2 justify-center items-center text-[#7C3B1D] font-bold"
+            >
               <Image
                 alt="me"
                 width={30}
@@ -22,8 +26,8 @@ export const Footer = () => {
                 src="/Vectors/X_logo.webp"
                 className="max-md:w-6"
               />
-              <div className="">CryptoCamelCoin</div>
-            </div>
+              <div>CryptoCamelCoin</div>
+            </Link>
             <div className="bg-[url('/Vectors/Youtube.webp')] hover:scale-90 duration-300 cursor-pointer text-xs lg:text-lg w-44 h-10 lg:w-80 lg:h-20 bg-contain bg-no-repeat flex gap-x-2 justify-center items-center text-[#7C3B1D] font-bold">
               <Image
                 alt="me"
