@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #fbae56;
+}
+
+@font-face {
+  font-family: HoboStd;
+  src: url("/app/fonts/HoboStd.otf") format("opentype");
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #fbae56;
+  }
+}
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+::-webkit-scrollbar {
+  width: 12px;
+  height: 15px;
+}
+::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
+::-webkit-scrollbar-thumb {
+  background: #ad9300;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+::-webkit-scrollbar-track {
+  background: #ad6110;
+  border: 0px none #ffffff;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.active__drawer {
+  background-color: #c78e49;
+  color: white;
+  border-radius: 5px;
+}
