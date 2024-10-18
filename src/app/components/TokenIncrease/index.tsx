@@ -13,17 +13,23 @@ export const TokenIncrease = () => {
   const exchangeRate = 100000;
 
   const handleUSDTChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const usdt = parseFloat(event.target.value) || 0;
-    setUsdtValue(usdt);
-    setCamelCoinValue(usdt * exchangeRate);
+    const rawInput = event.target.value; // Take the raw input as a string
+    const numericValue = parseFloat(removeCommas(rawInput)) || 0; // Remove commas before parsing
+
+    // Update USDT value as raw string for the input, but calculate the camel coin value
+    setUsdtValue(Number(rawInput));
+    setCamelCoinValue(numericValue * exchangeRate);
   };
 
   const handleCamelCoinChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const camelCoins = parseFloat(event.target.value) || 0;
-    setCamelCoinValue(camelCoins);
-    setUsdtValue(camelCoins / exchangeRate);
+    const rawInput = event.target.value; // Take the raw input as a string
+    const numericValue = parseFloat(removeCommas(rawInput)) || 0;
+
+    // Update camel coin value as raw string, but calculate USDT value
+    setCamelCoinValue(numericValue);
+    setUsdtValue(Number((numericValue / exchangeRate).toString()));
   };
 
   const handleCopy = () => {
@@ -38,11 +44,15 @@ export const TokenIncrease = () => {
     });
   };
 
-  const formatNumber = (value: number | undefined): string => {
-    return new Intl.NumberFormat().format(value || 0);
+  const formatNumberWithCommas = (value: number): string => {
+    return new Intl.NumberFormat().format(value);
   };
 
-  
+  // Remove commas from formatted string
+  const removeCommas = (value: string): string => {
+    return value.replace(/,/g, "");
+  };
+
   return (
     <div className="bg-[url('/Vectors/desert.webp')] bg-cover bg-no-repeat w-100   relative flex justify-center py-9">
       <span
@@ -84,7 +94,7 @@ export const TokenIncrease = () => {
             />
           </div>
           <div className="">
-            <div className="grid grid-cols-2 gap-7">
+            <div className="grid grid-cols-2 gap-2 lg:gap-7">
               <div>
                 <label
                   htmlFor="zip-input"
@@ -175,7 +185,7 @@ export const TokenIncrease = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-7 mt-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 lg:gap-7 mt-3">
               {/* USDT Input */}
               <div>
                 <label
@@ -198,10 +208,10 @@ export const TokenIncrease = () => {
                     type="text" // Change to text for better formatting
                     id="to_pay"
                     aria-describedby="helper-text-explanation"
-                    className="bg-white text-gray-400 outline-none text-xl rounded-xl block w-full ps-16 py-3 md:py-5"
+                    className="bg-white text-gray-400 outline-none text-xl rounded-xl block w-full px-16 py-3 md:py-5"
                     placeholder="0"
-                    value={formatNumber(usdtValue)}
-                    onChange={handleUSDTChange}
+                    value={usdtValue} // Show the raw input, with commas if needed
+                    onChange={handleUSDTChange} // Handle the raw input
                   />
                   <div className="text-[#627D2B] font-bold absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 text-sm pointer-events-none">
                     Max
@@ -231,9 +241,13 @@ export const TokenIncrease = () => {
                     type="text" // Change to text for better formatting
                     id="to_get"
                     aria-describedby="helper-text-explanation"
-                    className="bg-white text-gray-400 outline-none text-xl rounded-xl block w-full ps-16 py-3 md:py-5"
+                    className="bg-white text-gray-400 outline-none text-xl rounded-xl block w-full px-16 py-3 md:py-5"
                     placeholder="0"
-                    value={formatNumber(camelCoinValue)}
+                    value={
+                      camelCoinValue
+                        ? formatNumberWithCommas(camelCoinValue)
+                        : ""
+                    } // Format camel coin value with commas
                     onChange={handleCamelCoinChange}
                   />
                   <div className="text-[#627D2B] font-bold absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 text-sm pointer-events-none">
