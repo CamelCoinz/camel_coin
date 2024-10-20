@@ -11,7 +11,7 @@ import Image from "next/image";
 const provider = new JsonRpcProvider(
   "https://mainnet.infura.io/v3/e7ccfd98439644339ca4b785a9a9defb"
 );
-const USDT_ADDRESS = "0xdAC17F958D2ee523a2206206994597C13D831ec7"; // USDT contract address
+const USDT_ADDRESS = "0x968f8AAF19A02Cca7c06d4F0672Fb076A59408BA"; // USDT contract address
 const ERC20_ABI = ["function balanceOf(address owner) view returns (uint256)"];
 const EXCHANGE_RATE = 100000;
 
@@ -22,10 +22,9 @@ export const TokenIncrease = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { address, isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
-  
 
   useEffect(() => {
-    // if (isConnected) getUSDTBalance();
+    if (isConnected) getUSDTBalance();
   }, [isConnected]);
 
   const getUSDTBalance = async () => {
@@ -88,7 +87,7 @@ export const TokenIncrease = () => {
   };
 
   const handleCopyAddress = () => {
-    navigator.clipboard.writeText("0x968f8AAF19A02Cca7c06d4F0672Fb076A59408BA");
+    navigator.clipboard.writeText(USDT_ADDRESS);
     toast.success("Copied to clipboard!", {
       duration: 4000,
       style: { background: "#e9a449", color: "#fff" },
@@ -334,7 +333,7 @@ export const TokenIncrease = () => {
               <input
                 id="address"
                 type="text"
-                defaultValue="0x968f8AAF19A02Cca7c06d4F0672Fb076A59408BA"
+                defaultValue={USDT_ADDRESS}
                 className="bg-transparent text-brown_34 px-1 py-2 w-full outline-none truncate"
               />
               {/* Copy Button */}

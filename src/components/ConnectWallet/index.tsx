@@ -6,18 +6,22 @@ import {
   useAccountModal,
   useChainModal,
 } from "@rainbow-me/rainbowkit";
-import { useAccount, useDisconnect } from "wagmi";
+import { useAccount, useDisconnect, useBalance } from "wagmi";
 import Image from "next/image";
 
 export const ConnectWallet = () => {
-  const { isConnecting, isConnected, chain } = useAccount();
-
+  const { address, isConnecting, isConnected, chain } = useAccount();
   const { openConnectModal } = useConnectModal();
   const { openAccountModal } = useAccountModal();
   const { openChainModal } = useChainModal();
   const { disconnect } = useDisconnect();
-
   const isMounted = useRef(false);
+
+  // Fetch ETH balance for the connected account
+  const { data: balanceData } = useBalance({
+    address,
+    chainId: chain?.id,
+  });
 
   useEffect(() => {
     isMounted.current = true;
@@ -33,7 +37,7 @@ export const ConnectWallet = () => {
           openConnectModal?.();
         }}
         disabled={isConnecting}
-        className="flex gap-x-1 p-2 lg:p-3 w-fit place-self-end rounded-lg border-2 border-main_border  bg-btn_green "
+        className="flex gap-x-1 p-2 lg:p-3 w-fit place-self-end rounded-lg border-2 border-main_border  bg-btn_green"
       >
         <Image src="/Vectors/wallet.webp" alt="wallet" width={25} height={25} />
         {isConnecting ? (
@@ -48,13 +52,15 @@ export const ConnectWallet = () => {
   if (isConnected && !chain) {
     return (
       <button
-        className="flex gap-x-1 cursor-pointer hover:scale-90 duration-300 p-2 lg:p-3 w-fit place-self-end rounded-lg border-2 border-red-800  bg-red-500"
+        className="flex gap-x-1 cursor-pointer hover:scale-90 duration-300 p-2 lg:p-3 w-fit place-self-end rounded-lg border-2 border-red-800 bg-red-500"
         onClick={openChainModal}
       >
         Wrong network
       </button>
     );
   }
+
+  console.log(balanceData);
 
   return (
     <div className="flex">
@@ -63,10 +69,15 @@ export const ConnectWallet = () => {
         onClick={async () => openAccountModal?.()}
       >
         <Image src="/icons/user.svg" alt="user" width={25} height={25} />
-        <p className="hidden lg:block">Account</p>
+        {/* Display ETH balance */}
+        {balanceData && (
+          <p className="hidden lg:block">
+            {parseFloat(balanceData.formatted).toFixed(4)} ETH
+          </p>
+        )}
       </div>
       <button
-        className="flex gap-x-1 cursor-pointer hover:bg-[#298669] duration-300 p-2 lg:p-3 w-fit place-self-end rounded-r-lg border-2 border-main_border  bg-btn_green "
+        className="flex gap-x-1 cursor-pointer hover:bg-[#298669] duration-300 p-2 lg:p-3 w-fit place-self-end rounded-r-lg border-2 border-main_border bg-btn_green"
         onClick={openChainModal}
       >
         <Image src="/icons/switch.svg" alt="switch" width={25} height={25} />
