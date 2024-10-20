@@ -1,16 +1,14 @@
 import localFont from "next/font/local";
-import { Footer } from "./components/Footer";
+import { Footer } from "../components/Footer";
 import { Toaster } from "react-hot-toast";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import Providers from "./providers";
 import "@rainbow-me/rainbowkit/styles.css";
 import "./globals.css";
+import Header from "@/components/Header";
 
 export const metadata: Metadata = {
-  icons: {
-    icon: "/Logos/coin-logo.webp",
-  },
   title: "Camel Coin",
   description: "Camel Coin ; The Desert’s Digital Gold",
   keywords: [
@@ -21,7 +19,7 @@ export const metadata: Metadata = {
     "camel",
     "Camelcoin",
     "presale",
-    "coin"
+    "coin",
   ],
 };
 
@@ -40,8 +38,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistMono.className}`}>
         <Toaster position="top-center" />
-        <Providers cookie={cookie}>{children}</Providers>
-        <Footer />
+        <Providers cookie={cookie}>
+          {children}
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
