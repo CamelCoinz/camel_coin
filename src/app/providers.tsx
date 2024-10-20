@@ -3,8 +3,8 @@
 import { WagmiProvider, cookieToInitialState } from "wagmi";
 import { RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
 import { config } from "./lib/config";
+import { BalanceProvider } from "./BalanceProvider";// Import the balance context provider
 
 const queryClient = new QueryClient();
 
@@ -28,7 +28,9 @@ export default function Providers({ children, cookie }: Props) {
             overlayBlur: "small",
           })}
         >
-          {children}
+          <BalanceProvider>
+            {children}
+          </BalanceProvider>
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>

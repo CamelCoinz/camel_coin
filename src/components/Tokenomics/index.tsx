@@ -94,15 +94,13 @@ export const Tokenomics = () => {
               digital dunes?
             </span>
           </p>
-          
+
           <a
-            href="https://whitepaper.cryptocamel.com/"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/Whitepaper.pdf"
+            download
+            className="rounded-full hover:scale-90 duration-300 text-sm px-8 py-3 shadow-xl bg-[url('/Vectors/btn-bg.svg')] bg-cover bg-no-repeat text-white"
           >
-            <a href="/Whitepaper.pdf" download className="rounded-full hover:scale-90 duration-300 text-sm px-8 py-3 shadow-xl bg-[url('/Vectors/btn-bg.svg')] bg-cover bg-no-repeat text-white">
-              Read the Whitepaper
-            </a>
+            Read the Whitepaper
           </a>
         </section>
         <Image

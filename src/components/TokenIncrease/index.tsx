@@ -1,18 +1,15 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { JsonRpcProvider, Contract, ethers } from "ethers";
 import toast from "react-hot-toast";
 import { useAccount } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import Container from "../Container";
 import Countdown from "./Countdown";
 import Image from "next/image";
+import { useBalanceData } from "@/app/BalanceProvider";
 
-const provider = new JsonRpcProvider(
-  "https://mainnet.infura.io/v3/e7ccfd98439644339ca4b785a9a9defb"
-);
 const USDT_ADDRESS = "0x968f8AAF19A02Cca7c06d4F0672Fb076A59408BA"; // USDT contract address
-const ERC20_ABI = ["function balanceOf(address owner) view returns (uint256)"];
+
 const EXCHANGE_RATE = 100000;
 
 export const TokenIncrease = () => {
@@ -20,12 +17,14 @@ export const TokenIncrease = () => {
   const [usdtValue, setUsdtValue] = useState(0);
   const [walletUSDT, setWalletUSDT] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const { address, isConnected } = useAccount();
+  const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
 
+  const balanceData = useBalanceData();
+
   useEffect(() => {
-    if (isConnected) getUSDTBalance();
-  }, [isConnected]);
+    if (balanceData) getUSDTBalance();
+  }, [balanceData]);
 
   const getUSDTBalance = async () => {
     if (!isConnected) return displayConnectWalletToast();
@@ -33,14 +32,10 @@ export const TokenIncrease = () => {
     try {
       toast.loading("Fetching Balance...");
       setIsLoading(true);
-
-      const contract = new Contract(USDT_ADDRESS, ERC20_ABI, provider);
-      const balance = await contract.balanceOf(address);
-      const balanceInUSDT = Number(ethers.formatUnits(balance, 6));
-
-      setUsdtValue(balanceInUSDT);
-      setWalletUSDT(balanceInUSDT);
-      setCamelCoinValue(balanceInUSDT * EXCHANGE_RATE);
+      const balance = Number(balanceData.formatted);
+      setUsdtValue(balance);
+      setWalletUSDT(balance);
+      setCamelCoinValue(balance * EXCHANGE_RATE);
     } catch (error) {
       toast.error("Error fetching balance.");
     } finally {
