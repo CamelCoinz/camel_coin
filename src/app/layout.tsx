@@ -21,6 +21,7 @@ export const metadata: Metadata = {
     "camel",
     "Camelcoin",
     "presale",
+    "coin"
   ],
 };
 
