@@ -118,36 +118,36 @@ const HowToBuy = () => {
             alt="me"
             width={500}
             height={500}
-            src="/Vectors/1.svg"
-            className="object-contain object-center md:w-[20vw]"
+            src="/Vectors/1.webp"
+            className="object-contain object-center md:w-[500px]"
           />
           <Image
             alt="me"
             width={500}
             height={500}
-            src="/Vectors/2.svg"
-            className="object-contain object-center md:w-[20vw]"
+            src="/Vectors/2.webp"
+            className="object-contain object-center md:w-[500px]"
           />
           <Image
             alt="me"
             width={500}
             height={500}
-            src="/Vectors/3.svg"
-            className="object-contain object-center md:w-[20vw]"
+            src="/Vectors/3.webp"
+            className="object-contain object-center md:w-[500px]"
           />
           <Image
             alt="me"
             width={500}
             height={500}
-            src="/Vectors/4.svg"
-            className="object-contain object-center md:w-[20vw]"
+            src="/Vectors/4.webp"
+            className="object-contain object-center md:w-[500px]"
           />
           <Image
             alt="me"
             width={500}
             height={500}
-            src="/Vectors/5.svg"
-            className="object-contain object-center md:w-[20vw]"
+            src="/Vectors/5.webp"
+            className="object-contain object-center md:w-[500px]"
           />
         </div>
       </Container>
