@@ -5,8 +5,15 @@ import { ToBuyBox } from "./ToBuyBox";
 
 const HowToBuy = () => {
   return (
-    <div className="bg-[url('/Vectors/camel-bg.svg')] bg-contain lg:bg-cover bg-no-repeat w-100 relative flex justify-center">
-      <Container className="relative mt-40 md:mt-[350px] lg:mt-[550px] pb-10 lg:pb-32">
+    <div className="relative h-full  mb-10">
+      <Image
+        alt="me"
+        width={500}
+        height={500}
+        src="/Vectors/camel-bg.svg"
+        className="w-screen"
+      />
+      <Container className=" relative -mt-28 min-[500px]:-mt-40  sm:-mt-[200px] lg:-mt-[300px] xl:-mt-[400px] min-[1500px]:-mt-[500px]">
         <h1 className="text-txt_brown text-2xl lg:text-5xl font-bold">
           How to Buy Camel Coins
         </h1>
@@ -113,41 +120,48 @@ const HowToBuy = () => {
           </ToBuyBox>
         </div>
 
-        <div className="hidden lg:flex flex-wrap justify-center mt-14 gap-10">
+        <div className="hidden lg:grid grid-cols-2 gap-10 mt-10">
           <Image
             alt="me"
             width={500}
             height={500}
             src="/Vectors/1.webp"
-            className="object-contain object-center md:w-[500px]"
+            className="w-[400px] xl:w-[500px]"
           />
           <Image
             alt="me"
             width={500}
             height={500}
             src="/Vectors/2.webp"
-            className="object-contain object-center md:w-[500px]"
+            className="w-[400px] xl:w-[500px]"
           />
           <Image
             alt="me"
             width={500}
             height={500}
             src="/Vectors/3.webp"
-            className="object-contain object-center md:w-[500px]"
+            className="w-[400px] xl:w-[500px]"
           />
           <Image
             alt="me"
             width={500}
             height={500}
             src="/Vectors/4.webp"
-            className="object-contain object-center md:w-[500px]"
+            className="w-[400px] xl:w-[500px]"
           />
           <Image
             alt="me"
             width={500}
             height={500}
             src="/Vectors/5.webp"
-            className="object-contain object-center md:w-[500px]"
+            className="w-[400px] xl:w-[500px]"
+          />
+          <Image
+            alt="me"
+            width={500}
+            height={500}
+            src="/Vectors/three-camel-coin.webp"
+            className="lg:w-[290px]  place-self-center"
           />
         </div>
       </Container>

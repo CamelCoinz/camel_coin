@@ -65,7 +65,7 @@ export const Tokenomics = () => {
           src="/Vectors/camel-tokenomics.svg"
           className="object-contain w-full absolute left-0"
         />
-        <section className="relative py-10 pt-28 md:mt-36 xl:pt-[300px]">
+        <section className="relative py-10 pt-28 md:mt-36 xl:pt-[400px]">
           <span
             id="who-is"
             className=" absolute top-9 lg:top-[200px] sr-only "

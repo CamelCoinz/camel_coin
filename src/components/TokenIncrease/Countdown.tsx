@@ -45,8 +45,8 @@ const Countdown = () => {
       {/* Days */}
 
       <div className="text-center">
-        <div className="bg-[#CF5F1D] border-[3px] p-2 md:p-3 border-clock_border text-3xl lg:text-4xl font-bold flex items-center justify-center rounded-2xl">
-          <span className="bg-white p-3 md:p-7 rounded-xl text-brown_34">
+        <div className="bg-[#CF5F1D] border-[3px] p-2 md:p-3 border-clock_border text-3xl md:text-4xl font-bold flex items-center justify-center rounded-2xl">
+          <span className="bg-white p-3 md:p-4 xl:p-7 rounded-xl text-brown_34">
             {timeLeft.days < 10 ? `0${timeLeft.days}` : timeLeft.days}
           </span>
         </div>
@@ -56,8 +56,8 @@ const Countdown = () => {
       {/* Hours */}
 
       <div className="text-center">
-        <div className="bg-[#CF5F1D] border-[3px] p-2 md:p-3 border-clock_border text-3xl lg:text-4xl font-bold flex items-center justify-center rounded-2xl">
-          <span className="bg-white p-3 md:p-7 rounded-xl text-brown_34">
+        <div className="bg-[#CF5F1D] border-[3px] p-2 md:p-3 border-clock_border text-3xl md:text-4xl font-bold flex items-center justify-center rounded-2xl">
+          <span className="bg-white p-3 md:p-4 xl:p-7 rounded-xl text-brown_34">
             {timeLeft.hours < 10 ? `0${timeLeft.hours}` : timeLeft.hours}
           </span>
         </div>
@@ -67,8 +67,8 @@ const Countdown = () => {
       {/* Minutes */}
 
       <div className="text-center">
-        <div className="bg-[#CF5F1D] border-[3px] p-2 md:p-3 border-clock_border text-3xl lg:text-4xl font-bold  flex items-center justify-center rounded-2xl">
-          <span className="bg-white p-3 md:p-7 rounded-xl text-brown_34">
+        <div className="bg-[#CF5F1D] border-[3px] p-2 md:p-3 border-clock_border text-3xl md:text-4xl font-bold  flex items-center justify-center rounded-2xl">
+          <span className="bg-white p-3 md:p-4 xl:p-7 rounded-xl text-brown_34">
             {timeLeft.minutes < 10 ? `0${timeLeft.minutes}` : timeLeft.minutes}
           </span>
         </div>
@@ -78,8 +78,8 @@ const Countdown = () => {
       {/* Seconds */}
 
       <div className="text-center">
-        <div className="bg-[#CF5F1D] border-[3px] p-2 md:p-3 border-clock_border text-3xl lg:text-4xl font-bold flex items-center justify-center rounded-2xl">
-          <span className="bg-white p-3 md:p-7 rounded-xl text-brown_34">
+        <div className="bg-[#CF5F1D] border-[3px] p-2 md:p-3 border-clock_border text-3xl md:text-4xl font-bold flex items-center justify-center rounded-2xl">
+          <span className="bg-white p-3 md:p-4 xl:p-7 rounded-xl text-brown_34">
             {timeLeft.seconds < 10 ? `0${timeLeft.seconds}` : timeLeft.seconds}
           </span>
         </div>
