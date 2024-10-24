@@ -21,8 +21,8 @@ const EXCHANGE_RATE = 100000;
 
 export const TokenIncrease = () => {
   const [camelCoinValue, setCamelCoinValue] = useState(0);
-  const [usdtValue, setUsdtValue] = useState("0");
-  const [walletUSDT, setWalletUSDT] = useState(20);
+  const [usdtValue, setUsdtValue] = useState("");
+  const [walletUSDT, setWalletUSDT] = useState(0);
   const [isLoadingData, setIsLoadingData] = useState(false);
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
@@ -36,7 +36,7 @@ export const TokenIncrease = () => {
   const balanceData = useBalanceData();
 
   useEffect(() => {
-    // if (balanceData) getUSDTBalance();
+    if (balanceData) getUSDTBalance();
   }, [balanceData]);
 
   const handleBuyCoin = async () => {
@@ -75,6 +75,36 @@ export const TokenIncrease = () => {
       hash,
     });
 
+  useEffect(() => {
+    if (error as BaseError) {
+      Swal.close();
+      Swal.fire({
+        title: "Transaction Failed!",
+        text: "The transaction has been rejected",
+        icon: "error",
+        showConfirmButton: false,
+        showCancelButton: true,
+        cancelButtonColor: "#6d0000",
+        cancelButtonText: "Close",
+      });
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (isConfirmed) {
+      Swal.close();
+      Swal.fire({
+        title: "Transaction Succeed!",
+        text: `You have successfully bought ${camelCoinValue} camel coin!`,
+        icon: "success",
+        showConfirmButton: false,
+        showCancelButton: true,
+        cancelButtonColor: "#6d0000",
+        cancelButtonText: "Close",
+      });
+    }
+  }, [isConfirmed]);
+
   const getUSDTBalance = async () => {
     if (!isConnected) return displayConnectWalletToast();
 
@@ -82,7 +112,7 @@ export const TokenIncrease = () => {
       toast.loading("Fetching Balance...");
       setIsLoadingData(true);
       const balance = Number(balanceData.formatted);
-      setUsdtValue(balance);
+      setUsdtValue(balance.toString());
       setWalletUSDT(balance);
       setCamelCoinValue(balance * EXCHANGE_RATE);
     } catch (error) {
@@ -136,36 +166,6 @@ export const TokenIncrease = () => {
       style: { background: "#e9a449", color: "#fff" },
     });
   };
-
-  useEffect(() => {
-    if (error as BaseError) {
-      Swal.close();
-      return Swal.fire({
-        title: "Transaction Failed!",
-        text: "The transaction has been rejected",
-        icon: "error",
-        showConfirmButton: false,
-        showCancelButton: true,
-        cancelButtonColor: "#6d0000",
-        cancelButtonText: "Close",
-      });
-    }
-  }, [error]);
-
-  useEffect(() => {
-    if (isConfirmed) {
-      Swal.close();
-      return Swal.fire({
-        title: "Transaction Succeed!",
-        text: `You have successfully bought ${camelCoinValue} camel coin!`,
-        icon: "success",
-        showConfirmButton: false,
-        showCancelButton: true,
-        cancelButtonColor: "#6d0000",
-        cancelButtonText: "Close",
-      });
-    }
-  }, [isConfirmed]);
 
   return (
     <div className="bg-[url('/Vectors/desert.webp')] bg-cover bg-no-repeat w-100   relative flex justify-center py-9">
@@ -328,9 +328,9 @@ export const TokenIncrease = () => {
                     id="to_pay"
                     aria-describedby="helper-text-explanation"
                     className="bg-white text-gray-400 outline-none text-xl rounded-xl block w-full px-16 py-3 md:py-5"
-                    placeholder={usdtValue}
+                    placeholder="0"
                     value={usdtValue}
-                    onInput={(e) => {
+                    onChange={(e) => {
                       const value = e.currentTarget.value;
                       if (/^\d*\.?\d*$/.test(value)) {
                         handleInputChange(e, true);
