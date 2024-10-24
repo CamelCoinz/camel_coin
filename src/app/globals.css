@@ -55,3 +55,9 @@ body {
   color: white;
   border-radius: 5px;
 }
+div:where(.swal2-container) div:where(.swal2-popup) {
+  background: hsla(40, 77%, 36%, 0.7) !important;
+
+  backdrop-filter: blur(10px);
+  color: hsl(0deg 0% 100%) !important;
+}

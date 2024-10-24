@@ -1,12 +1,19 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useAccount } from "wagmi";
+import {
+  type BaseError,
+  useSendTransaction,
+  useWaitForTransactionReceipt,
+  useAccount,
+} from "wagmi";
+import { parseEther } from "viem";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import Container from "../Container";
 import Countdown from "./Countdown";
 import Image from "next/image";
 import { useBalanceData } from "@/app/BalanceProvider";
+import Swal from "sweetalert2";
 
 const USDT_ADDRESS = "0x968f8AAF19A02Cca7c06d4F0672Fb076A59408BA"; // USDT contract address
 
@@ -14,24 +21,66 @@ const EXCHANGE_RATE = 100000;
 
 export const TokenIncrease = () => {
   const [camelCoinValue, setCamelCoinValue] = useState(0);
-  const [usdtValue, setUsdtValue] = useState(0);
-  const [walletUSDT, setWalletUSDT] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
+  const [usdtValue, setUsdtValue] = useState("0");
+  const [walletUSDT, setWalletUSDT] = useState(20);
+  const [isLoadingData, setIsLoadingData] = useState(false);
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
+  const {
+    data: hash,
+    error,
+    isPending,
+    sendTransaction,
+  } = useSendTransaction();
 
   const balanceData = useBalanceData();
 
   useEffect(() => {
-    if (balanceData) getUSDTBalance();
+    // if (balanceData) getUSDTBalance();
   }, [balanceData]);
+
+  const handleBuyCoin = async () => {
+    console.log(usdtValue);
+
+    if (isConnected) {
+      if (usdtValue === "0") {
+        return Swal.fire({
+          title: "You can't buy 0 coin.",
+          text: "Please enter an amount greater than 0.",
+          icon: "error",
+          showConfirmButton: false,
+          showCancelButton: true,
+          cancelButtonColor: "#6d0000",
+          cancelButtonText: "Close",
+        });
+      } else {
+        sendTransaction({ to: USDT_ADDRESS, value: parseEther(usdtValue) });
+        Swal.fire({
+          title: "Transaction Sent!",
+          text: " Confirm in your wallet.",
+          icon: "success",
+          showConfirmButton: false,
+          showCancelButton: true,
+          cancelButtonColor: "#6d0000",
+          cancelButtonText: "Close",
+        });
+      }
+    } else {
+      openConnectModal?.();
+    }
+  };
+
+  const { isLoading: isConfirming, isSuccess: isConfirmed } =
+    useWaitForTransactionReceipt({
+      hash,
+    });
 
   const getUSDTBalance = async () => {
     if (!isConnected) return displayConnectWalletToast();
 
     try {
       toast.loading("Fetching Balance...");
-      setIsLoading(true);
+      setIsLoadingData(true);
       const balance = Number(balanceData.formatted);
       setUsdtValue(balance);
       setWalletUSDT(balance);
@@ -39,7 +88,7 @@ export const TokenIncrease = () => {
     } catch (error) {
       toast.error("Error fetching balance.");
     } finally {
-      setIsLoading(false);
+      setIsLoadingData(false);
       toast.dismiss();
     }
   };
@@ -63,18 +112,17 @@ export const TokenIncrease = () => {
     isUSDT: boolean
   ) => {
     if (isConnected) {
-      const input = removeCommas(event.target.value);
-      const numericValue = parseFloat(input) || 0;
+      const input = event.target.value;
+      console.log(input);
 
-      if (numericValue > walletUSDT)
-        return toast.error("You don't have enough USDT");
+      if (walletUSDT === 0) return toast.error("You don't have enough USDT");
 
       if (isUSDT) {
-        setUsdtValue(numericValue);
-        setCamelCoinValue(numericValue * EXCHANGE_RATE);
+        setUsdtValue(input);
+        setCamelCoinValue(Number(input) * EXCHANGE_RATE);
       } else {
-        setCamelCoinValue(numericValue);
-        setUsdtValue(numericValue / EXCHANGE_RATE);
+        setCamelCoinValue(Number(input));
+        setUsdtValue((Number(input) / EXCHANGE_RATE).toString());
       }
     } else {
       return displayConnectWalletToast();
@@ -89,10 +137,35 @@ export const TokenIncrease = () => {
     });
   };
 
-  const removeCommas = (value: string) => value.replace(/,/g, "");
+  useEffect(() => {
+    if (error as BaseError) {
+      Swal.close();
+      return Swal.fire({
+        title: "Transaction Failed!",
+        text: "The transaction has been rejected",
+        icon: "error",
+        showConfirmButton: false,
+        showCancelButton: true,
+        cancelButtonColor: "#6d0000",
+        cancelButtonText: "Close",
+      });
+    }
+  }, [error]);
 
-  const handleBuyCoin = () =>
-    isConnected ? getUSDTBalance() : openConnectModal?.();
+  useEffect(() => {
+    if (isConfirmed) {
+      Swal.close();
+      return Swal.fire({
+        title: "Transaction Succeed!",
+        text: `You have successfully bought ${camelCoinValue} camel coin!`,
+        icon: "success",
+        showConfirmButton: false,
+        showCancelButton: true,
+        cancelButtonColor: "#6d0000",
+        cancelButtonText: "Close",
+      });
+    }
+  }, [isConfirmed]);
 
   return (
     <div className="bg-[url('/Vectors/desert.webp')] bg-cover bg-no-repeat w-100   relative flex justify-center py-9">
@@ -100,6 +173,7 @@ export const TokenIncrease = () => {
         id="token-price"
         className=" absolute -top-8 lg:-top-[70px] sr-only "
       />
+
       <Container>
         <h1 className="text-txt_brown text-2xl lg:text-5xl font-bold ">
           Token Price Increase In:
@@ -225,7 +299,11 @@ export const TokenIncrease = () => {
                 </div>
               </div>
             </div>
-
+            {error && (
+              <div>
+                Error: {(error as BaseError).shortMessage || error.message}
+              </div>
+            )}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 lg:gap-7 mt-3">
               {/* USDT Input */}
               <div>
@@ -246,13 +324,18 @@ export const TokenIncrease = () => {
                     />
                   </div>
                   <input
-                    type="text" // Change to text for better formatting
+                    type="text"
                     id="to_pay"
                     aria-describedby="helper-text-explanation"
                     className="bg-white text-gray-400 outline-none text-xl rounded-xl block w-full px-16 py-3 md:py-5"
-                    placeholder={usdtValue.toString()}
-                    value={usdtValue} // Show the raw input, with commas if needed
-                    onChange={(e) => handleInputChange(e, true)}
+                    placeholder={usdtValue}
+                    value={usdtValue}
+                    onInput={(e) => {
+                      const value = e.currentTarget.value;
+                      if (/^\d*\.?\d*$/.test(value)) {
+                        handleInputChange(e, true);
+                      }
+                    }}
                   />
                   <div className="text-[#627D2B] font-bold absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 text-sm pointer-events-none">
                     Max
@@ -300,7 +383,7 @@ export const TokenIncrease = () => {
               onClick={handleBuyCoin}
               disabled={isConnected ? (walletUSDT <= 0 ? true : false) : false}
               className={`gap-x-1 p-3 text-center  md:text-xl font-bold rounded-lg border-2  text-white  w-full ${
-                isLoading
+                isLoadingData
                   ? "hover:scale-95 duration-300 bg-blue-500 border-blue-700"
                   : !isConnected
                   ? "bg-orange-500 border-orange-700"
@@ -311,7 +394,7 @@ export const TokenIncrease = () => {
             >
               {!isConnected
                 ? "Connect Your Wallet to Buy"
-                : isLoading
+                : isLoadingData
                 ? "Waiting..."
                 : walletUSDT > 0
                 ? "Buy Now"
