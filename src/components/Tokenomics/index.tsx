@@ -8,7 +8,7 @@ export const Tokenomics = () => {
     <div className="bg-[url('/Vectors/bg-tokenomics.svg')] bg-contain bg-no-repeat w-full pt-7 relative flex justify-center">
       <span
         id="tokenomics"
-        className=" absolute -top-10 lg:-top-[5px] sr-only "
+        className=" absolute -top-10 lg:-top-[5px] sr-only"
       />
       <Container>
         <h1 className="text-txt_brown  text-2xl lg:text-5xl font-bold lg:mt-16 w-full">
@@ -94,7 +94,6 @@ export const Tokenomics = () => {
               digital dunes?
             </span>
           </p>
-
           <a
             href="/Whitepaper.pdf"
             download
