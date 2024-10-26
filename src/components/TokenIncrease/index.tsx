@@ -146,10 +146,15 @@ export const TokenIncrease = () => {
       console.log("Transaction sent:", tx);
       await tx.wait();
       console.log("Transaction confirmed:", tx);
-    } catch (error: { code: number }) {
-      if (error.code === "ACTION_REJECTED") {
+    } catch (error: unknown) {
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "code" in error &&
+        (error as { code: any }).code === "ACTION_REJECTED"
+      ) {
         Swal.fire({
-          title: "Transaction Rejected !",
+          title: "Transaction Rejected!",
           icon: "error",
           showConfirmButton: false,
           showCancelButton: true,
@@ -157,7 +162,8 @@ export const TokenIncrease = () => {
           cancelButtonText: "Close",
         });
       }
-      if (error.code === -32000) {
+
+      if ((error as { code: any }).code === -32000) {
         Swal.fire({
           title: "Transaction Failed!",
           text: "You don't have enough USDT",
