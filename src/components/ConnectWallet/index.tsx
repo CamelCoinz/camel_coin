@@ -61,19 +61,12 @@ export const ConnectWallet = () => {
   return (
     <div className="flex">
       <div
-        className="flex gap-x-1 cursor-pointer hover:bg-[#298669] duration-300 p-2 lg:p-3 w-fit place-self-end rounded-l-lg border-2 border-main_border border-r-0 bg-btn_green"
+        className="flex gap-x-1 cursor-pointer hover:bg-[#298669] duration-300 p-2 lg:p-3 w-fit place-self-end rounded-lg border-2 border-main_border   bg-btn_green"
         onClick={async () => openAccountModal?.()}
       >
         <Image src="/icons/user.svg" alt="user" width={25} height={25} />
         <p>{balanceData ? balanceData?.formatted + " ETH" : "Loading..."}</p>
       </div>
-      <button
-        className="flex gap-x-1 cursor-pointer hover:bg-[#298669] duration-300 p-2 lg:p-3 w-fit place-self-end rounded-r-lg border-2 border-main_border  bg-btn_green "
-        onClick={openChainModal}
-      >
-        <Image src="/icons/switch.svg" alt="switch" width={25} height={25} />
-        <span className="hidden lg:block">Switch Networks</span>
-      </button>
     </div>
   );
 };
