@@ -38,8 +38,7 @@ export const Tokenomics = () => {
             />
           </TokenBox>
           <TokenBox percent="15%" title="Rewards" />
-
-          <TokenBox percent="10%" title="Treasury">
+          <TokenBox percent="15%" title="Treasury">
             <Image
               alt="me"
               width={50}

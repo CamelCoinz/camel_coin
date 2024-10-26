@@ -24,8 +24,7 @@ const HowToBuy = () => {
         <div className="flex lg:hidden flex-wrap justify-center mt-5 gap-2">
           <ToBuyBox>
             <svg
-              width="32"
-              height="32"
+             className="w-[60px] h-[60px] col-span-2"
               viewBox="0 0 7 21"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -36,15 +35,17 @@ const HowToBuy = () => {
               />
             </svg>
             <div className="text-brown_34">
-              Set up a digital wallet <br /> (
-              <span className="text-[#AF000F]">MetaMask, Trust Wallet</span>, or
-              another ERC-20 compatible wallet).
+              <h1 className="text-lg ">Connect Your Wallet</h1>
+              <p>
+                If you already have a wallet, simply connect it to our platform.
+                If you don't have a wallet, you can download one of the
+                supported wallets like MetaMask, Trust Wallet, or others.
+              </p>
             </div>
           </ToBuyBox>
           <ToBuyBox>
             <svg
-              width="32"
-              height="32"
+             className="w-[60px] h-[60px]"
               viewBox="0 0 12 21"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -55,15 +56,18 @@ const HowToBuy = () => {
               />
             </svg>
             <div className="text-brown_34">
-              Fund your wallet with Ethereum
-              <span className="text-[#AF000F]"> (ETH) </span> or Binance Coin
-              <span className="text-[#AF000F]"> (BNB) </span> for gas fees.
+              <h1 className="text-lg ">Fund Your Wallet</h1>
+              <p>
+                Make sure your wallet is funded with USDT (Tether) on the
+                Ethereum network. In the future, we'll support more chains and
+                assets, so stay tuned for updates. Fund your wallet with
+                Ethereum
+              </p>
             </div>
           </ToBuyBox>
           <ToBuyBox>
             <svg
-              width="32"
-              height="32"
+             className="w-[60px] h-[60px]"
               viewBox="0 0 12 21"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -82,8 +86,7 @@ const HowToBuy = () => {
           </ToBuyBox>
           <ToBuyBox>
             <svg
-              width="32"
-              height="32"
+             className="w-[60px] h-[60px]"
               viewBox="0 0 14 20"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -101,8 +104,7 @@ const HowToBuy = () => {
           </ToBuyBox>
           <ToBuyBox>
             <svg
-              width="32"
-              height="32"
+             className="w-[60px] h-[60px]"
               viewBox="0 0 12 21"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"

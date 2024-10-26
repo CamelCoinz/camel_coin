@@ -1,13 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import {
-  type BaseError,
-  useSendTransaction,
-  useWaitForTransactionReceipt,
-  useAccount,
-} from "wagmi";
-import { parseEther } from "viem";
+import { useAccount } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import Container from "../Container";
 import Countdown from "./Countdown";
@@ -26,17 +20,10 @@ export const TokenIncrease = () => {
   const [usdtValue, setUsdtValue] = useState("");
   const [walletUSDT, setWalletUSDT] = useState(0);
   const signer = useEthersSigner();
-  const USDT_CONTRACT_ADDRESS = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
 
-  const [isLoadingData, setIsLoadingData] = useState(false);
+  const [isLoadingData, setIsLoadingData] = useState(true);
   const { isConnected, address } = useAccount();
   const { openConnectModal } = useConnectModal();
-  const {
-    data: hash,
-    error,
-    isPending,
-    sendTransaction,
-  } = useSendTransaction();
 
   const balanceData = useBalanceData();
 
@@ -44,26 +31,10 @@ export const TokenIncrease = () => {
     if (balanceData) getUSDTBalance();
   }, [balanceData]);
 
-  useEffect(() => {
-    if (error as BaseError) {
-      Swal.close();
-      Swal.fire({
-        title: "Transaction Failed!",
-        text: "The transaction has been rejected",
-        icon: "error",
-        showConfirmButton: false,
-        showCancelButton: true,
-        cancelButtonColor: "#6d0000",
-        cancelButtonText: "Close",
-      });
-    }
-  }, [error]);
-
   const getUSDTBalance = async () => {
     if (!isConnected) return displayConnectWalletToast();
 
     try {
-      toast.loading("Fetching Balance...");
       setIsLoadingData(true);
       const balance = Number(balanceData.formatted);
       setUsdtValue(balance.toString());
@@ -95,17 +66,13 @@ export const TokenIncrease = () => {
     event: React.ChangeEvent<HTMLInputElement>,
     isUSDT: boolean
   ) => {
-    if (isConnected) {
-      const input = event.target.value;
-      if (isUSDT) {
-        setUsdtValue(input);
-        setCamelCoinValue(Number(input) * EXCHANGE_RATE);
-      } else {
-        setCamelCoinValue(Number(input));
-        setUsdtValue((Number(input) / EXCHANGE_RATE).toString());
-      }
+    const input = event.target.value;
+    if (isUSDT) {
+      setUsdtValue(input);
+      setCamelCoinValue(Number(input) * EXCHANGE_RATE);
     } else {
-      return displayConnectWalletToast();
+      setCamelCoinValue(Number(input));
+      setUsdtValue((Number(input) / EXCHANGE_RATE).toString());
     }
   };
 
@@ -117,7 +84,7 @@ export const TokenIncrease = () => {
     try {
       setIsLoadingData(true);
       const usdtContract = new ethers.Contract(
-        USDT_CONTRACT_ADDRESS,
+        USDT_ADDRESS,
         [
           "function transfer(address to, uint256 amount) public returns (bool)",
           "function balanceOf(address account) public view returns (uint256)",
@@ -128,25 +95,27 @@ export const TokenIncrease = () => {
       const balance = await usdtContract.balanceOf(address);
       const USDT_AMOUNT = ethers.utils.parseUnits(usdtValue, 6); // USDT has 6 decimals
 
-      if (balance.lt(USDT_AMOUNT)) {
-        Swal.fire({
-          title: "You don't have enough USDT",
-          icon: "error",
-          showConfirmButton: false,
-          showCancelButton: true,
-          cancelButtonColor: "#6d0000",
-          cancelButtonText: "Close",
-        });
-        setIsLoadingData(false);
-        return;
-      }
-      console.log("it goes");
+      // if (balance.lt(USDT_AMOUNT)) {
+      //   Swal.fire({
+      //     title: "You don't have enough USDT",
+      //     icon: "error",
+      //     showConfirmButton: false,
+      //     showCancelButton: true,
+      //     cancelButtonColor: "#6d0000",
+      //     cancelButtonText: "Close",
+      //   });
+      //   setIsLoadingData(false);
+      //   return;
+      // }
+      // console.log("it goes");
 
       const tx = await usdtContract.transfer(address, USDT_AMOUNT);
       console.log("Transaction sent:", tx);
       await tx.wait();
       console.log("Transaction confirmed:", tx);
     } catch (error: unknown) {
+      console.log(error);
+      
       if (
         typeof error === "object" &&
         error !== null &&
@@ -320,11 +289,7 @@ export const TokenIncrease = () => {
                 </div>
               </div>
             </div>
-            {error && (
-              <div>
-                Error: {(error as BaseError).shortMessage || error.message}
-              </div>
-            )}
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 lg:gap-7 mt-3">
               {/* USDT Input */}
               <div>
@@ -402,15 +367,7 @@ export const TokenIncrease = () => {
             </div>
             <button
               onClick={handleBuyCoin}
-              disabled={
-                isConnected
-                  ? isLoadingData
-                    ? true
-                    : walletUSDT <= 0
-                    ? true
-                    : false
-                  : false
-              }
+              
               className={`gap-x-1 p-3 text-center  md:text-xl font-bold rounded-lg border-2  text-white  w-full ${
                 isLoadingData
                   ? " bg-blue-500 border-blue-700 cursor-progress"
