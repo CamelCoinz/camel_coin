@@ -170,7 +170,7 @@ const Header = () => {
       </header>
 
       {/* Scroll progress line */}
-      <div className="fixed top-[67px] lg:top-[78.5px] left-0 w-full h-[3px] bg-transparent z-50">
+      <div className="fixed top-[74px] lg:top-[77px] left-0 w-full h-[3px] bg-transparent z-50">
         <div
           className="h-full bg-[#b37c16] transition-all duration-300 ease-out"
           style={{ width: `${scrollProgress}%` }}
