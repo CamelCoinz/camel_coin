@@ -38,10 +38,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistMono.className}`}>
         <Toaster position="top-center" />
-        <Providers cookie={cookie}>
-          {children}
-          <Footer />
-        </Providers>
+        <Providers cookie={cookie}>{children}</Providers>
       </body>
     </html>
   );

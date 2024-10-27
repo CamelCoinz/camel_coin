@@ -5,6 +5,7 @@ import FutureListing from "../components/FutureListing";
 import { TokenIncrease } from "../components/TokenIncrease";
 import { Tokenomics } from "../components/Tokenomics";
 import HowToBuy from "../components/HowToBuy";
+import { Footer } from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <Roadmap />
       <HowToBuy />
       <Team />
+      <Footer />
     </>
   );
 }

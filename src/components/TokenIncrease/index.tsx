@@ -55,9 +55,11 @@ export const TokenIncrease = () => {
     try {
       setIsLoadingData(true);
       const balance = Number(balanceData.formatted);
-      setUsdtValue(balance.toString());
-      setWalletUSDT(balance);
-      setCamelCoinValue((balance * EXCHANGE_RATE).toString());
+      if (balance != 0) {
+        setUsdtValue(balance.toString());
+        setWalletUSDT(balance);
+        setCamelCoinValue((balance * EXCHANGE_RATE).toString());
+      }
     } catch (error) {
       toast.error("Error fetching balance.");
     } finally {
@@ -324,7 +326,7 @@ export const TokenIncrease = () => {
                     aria-describedby="helper-text-explanation"
                     className="bg-white text-black outline-none text-xl rounded-xl block w-full px-16 py-3 md:py-5"
                     placeholder="0"
-                    value={usdtValue}
+                    value={usdtValue.toLocaleString()}
                     onChange={(e) => {
                       const value = e.currentTarget.value;
                       if (/^\d*\.?\d*$/.test(value)) {

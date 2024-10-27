@@ -28,10 +28,26 @@ const config: Config = {
           "0%": { transform: "rotateY(0deg)" },
           "50%": { transform: "rotateY(360deg)" },
         },
+        dots: {
+          "0%": {
+            content: "",
+          },
+          "40%": {
+            content: "'.'",
+          },
+          "60%": {
+            content: "'..'",
+          },
+          "100%": {
+            content: "'...'",
+          },
+        },
       },
       animation: {
         zoom: "zoom 0.5s ease-in-out",
         spin: "spin 2s linear;",
+        spin_infinite: "spin 1s infinite;",
+        dots: "dots 1.5s steps(4, end) infinite;",
       },
     },
   },

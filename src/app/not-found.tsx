@@ -1,10 +1,20 @@
-import { FlipCoin } from "@/components/FlipCoin";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function NotFound() {
   return (
     <div className="h-screen flex flex-col items-center justify-center">
-      <span className="text-9xl underline my-5 text-brown_34">404</span>
+      <span className="text-9xl flex underline my-5 text-brown_34">
+        4
+        <Image
+          src="/Logos/coin-logo.webp"
+          alt="header_logo"
+          width={150}
+          height={150}
+          className="  animate-spin_infinite "
+        />
+        4
+      </span>
       <p>Could not find Page</p>
       <Link
         href="/"
@@ -13,7 +23,6 @@ export default function NotFound() {
       >
         back to Main Page
       </Link>
-      <FlipCoin />
     </div>
   );
 }
