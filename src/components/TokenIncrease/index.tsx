@@ -16,7 +16,7 @@ const USDT_ADDRESS = "0x968f8AAF19A02Cca7c06d4F0672Fb076A59408BA"; // USDT contr
 const EXCHANGE_RATE = 100000;
 
 export const TokenIncrease = () => {
-  const [camelCoinValue, setCamelCoinValue] = useState(0);
+  const [camelCoinValue, setCamelCoinValue] = useState("");
   const [usdtValue, setUsdtValue] = useState("");
   const [walletUSDT, setWalletUSDT] = useState(0);
   const signer = useEthersSigner();
@@ -27,39 +27,43 @@ export const TokenIncrease = () => {
 
   const balanceData = useBalanceData();
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "bottom-left",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
+
   useEffect(() => {
-    if (balanceData) getUSDTBalance();
+    if (!isConnected) {
+      Toast.fire({
+        icon: "info",
+        title: "Connect Wallet to Buy Coin",
+      });
+      setIsLoadingData(false);
+    } else {
+      balanceData && getUSDTBalance();
+    }
   }, [balanceData]);
 
   const getUSDTBalance = async () => {
-    if (!isConnected) return displayConnectWalletToast();
-
     try {
       setIsLoadingData(true);
       const balance = Number(balanceData.formatted);
       setUsdtValue(balance.toString());
       setWalletUSDT(balance);
-      setCamelCoinValue(balance * EXCHANGE_RATE);
+      setCamelCoinValue((balance * EXCHANGE_RATE).toString());
     } catch (error) {
       toast.error("Error fetching balance.");
     } finally {
       setIsLoadingData(false);
       toast.dismiss();
     }
-  };
-
-  const displayConnectWalletToast = () => {
-    toast.custom(
-      <div className="flex items-center bg-[#e9a449] text-white rounded-md px-3 py-1 gap-2">
-        <span>Connect Your Wallet First</span>
-        <button
-          onClick={openConnectModal}
-          className="flex text-sm gap-x-1 p-2 lg:p-3 w-fit place-self-end rounded-lg border-2 border-main_border bg-btn_green"
-        >
-          Connect Wallet
-        </button>
-      </div>
-    );
   };
 
   const handleInputChange = (
@@ -69,22 +73,18 @@ export const TokenIncrease = () => {
     const input = event.target.value;
     if (isUSDT) {
       setUsdtValue(input);
-      setCamelCoinValue(Number(input) * EXCHANGE_RATE);
+      setCamelCoinValue((Number(input) * EXCHANGE_RATE).toString());
     } else {
-      setCamelCoinValue(Number(input));
+      setCamelCoinValue(input);
       setUsdtValue((Number(input) / EXCHANGE_RATE).toString());
     }
   };
 
   const sendUSDT = async () => {
-    if (!signer || !address) {
-      displayConnectWalletToast();
-    }
-
     try {
       setIsLoadingData(true);
       const usdtContract = new ethers.Contract(
-        USDT_ADDRESS,
+        "0xdAC17F958D2ee523a2206206994597C13D831ec7",
         [
           "function transfer(address to, uint256 amount) public returns (bool)",
           "function balanceOf(address account) public view returns (uint256)",
@@ -95,33 +95,42 @@ export const TokenIncrease = () => {
       const balance = await usdtContract.balanceOf(address);
       const USDT_AMOUNT = ethers.utils.parseUnits(usdtValue, 6); // USDT has 6 decimals
 
-      // if (balance.lt(USDT_AMOUNT)) {
-      //   Swal.fire({
-      //     title: "You don't have enough USDT",
-      //     icon: "error",
-      //     showConfirmButton: false,
-      //     showCancelButton: true,
-      //     cancelButtonColor: "#6d0000",
-      //     cancelButtonText: "Close",
-      //   });
-      //   setIsLoadingData(false);
-      //   return;
-      // }
-      // console.log("it goes");
+      if (balance.lt(USDT_AMOUNT)) {
+        Swal.fire({
+          title: "You don't have enough USDT",
+          icon: "error",
+          showConfirmButton: false,
+          showCancelButton: true,
+          cancelButtonColor: "#6d0000",
+          cancelButtonText: "Close",
+        });
+        setIsLoadingData(false);
+        return;
+      }
 
-      const tx = await usdtContract.transfer(address, USDT_AMOUNT);
-      console.log("Transaction sent:", tx);
+      const tx = await usdtContract.transfer(USDT_ADDRESS, USDT_AMOUNT);
+      Swal.fire({
+        title: "Transaction Sent!",
+        text: tx,
+        icon: "success",
+        showConfirmButton: false,
+        showCancelButton: true,
+        cancelButtonColor: "#6d0000",
+        cancelButtonText: "Close",
+      });
       await tx.wait();
-      console.log("Transaction confirmed:", tx);
+      Swal.fire({
+        title: "Transaction Confirmed!",
+        text: tx,
+        icon: "success",
+        showConfirmButton: false,
+        showCancelButton: true,
+        cancelButtonColor: "#6d0000",
+        cancelButtonText: "Close",
+      });
     } catch (error: unknown) {
-      console.log(error);
-      
-      if (
-        typeof error === "object" &&
-        error !== null &&
-        "code" in error &&
-        (error as { code: any }).code === "ACTION_REJECTED"
-      ) {
+      console.error(error);
+      if ((error as { code: string }).code === "ACTION_REJECTED") {
         Swal.fire({
           title: "Transaction Rejected!",
           icon: "error",
@@ -131,8 +140,7 @@ export const TokenIncrease = () => {
           cancelButtonText: "Close",
         });
       }
-
-      if ((error as { code: any }).code === -32000) {
+      if ((error as { code: number }).code === -32000) {
         Swal.fire({
           title: "Transaction Failed!",
           text: "You don't have enough USDT",
@@ -150,12 +158,13 @@ export const TokenIncrease = () => {
 
   const handleCopyAddress = () => {
     navigator.clipboard.writeText(USDT_ADDRESS);
-    toast.success("Copied to clipboard!", {
-      duration: 4000,
-      style: { background: "#e9a449", color: "#fff" },
+    Toast.fire({
+      icon: "success",
+      title: "Copied to clipboard!",
     });
   };
-  const handleBuyCoin = () => (isConnected ? sendUSDT() : openConnectModal?.());
+  const handleBuyCoin = () =>
+    !isLoadingData && (isConnected ? sendUSDT() : openConnectModal?.());
 
   return (
     <div className="bg-[url('/Vectors/desert.webp')] bg-cover bg-no-repeat w-100   relative flex justify-center py-9">
@@ -205,7 +214,7 @@ export const TokenIncrease = () => {
                   htmlFor="zip-input"
                   className="block mb-1 text-sm md:text-lg font-bold text-brown_34"
                 >
-                  Selet currency to spend:
+                  Select currency to spend:
                 </label>
                 <div className="relative">
                   <label className="sr-only" htmlFor="USDT">
@@ -249,7 +258,7 @@ export const TokenIncrease = () => {
                   htmlFor="zip-input"
                   className="block mb-1  text-sm md:text-lg font-bold text-brown_34"
                 >
-                  Selet payment method:
+                  Select payment method:
                 </label>
                 <div className="relative">
                   <label className="sr-only" htmlFor="ETH">
@@ -313,7 +322,7 @@ export const TokenIncrease = () => {
                     type="text"
                     id="to_pay"
                     aria-describedby="helper-text-explanation"
-                    className="bg-white text-gray-400 outline-none text-xl rounded-xl block w-full px-16 py-3 md:py-5"
+                    className="bg-white text-black outline-none text-xl rounded-xl block w-full px-16 py-3 md:py-5"
                     placeholder="0"
                     value={usdtValue}
                     onChange={(e) => {
@@ -348,12 +357,12 @@ export const TokenIncrease = () => {
                     />
                   </div>
                   <input
-                    type="text" // Change to text for better formatting
+                    type="text"
                     id="to_get"
                     aria-describedby="helper-text-explanation"
-                    className="bg-white text-gray-400 outline-none text-xl rounded-xl block w-full px-16 py-3 md:py-5"
+                    className="bg-white text-black outline-none text-xl rounded-xl block w-full px-16 py-3 md:py-5"
                     placeholder="0"
-                    value={camelCoinValue} // Format camel coin value with commas
+                    value={camelCoinValue}
                     onChange={(e) => handleInputChange(e, false)}
                   />
                   <div className="text-[#627D2B] font-bold absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 text-sm pointer-events-none">
@@ -367,25 +376,29 @@ export const TokenIncrease = () => {
             </div>
             <button
               onClick={handleBuyCoin}
-              
-              className={`gap-x-1 p-3 text-center  md:text-xl font-bold rounded-lg border-2  text-white  w-full ${
-                isLoadingData
-                  ? " bg-blue-500 border-blue-700 cursor-progress"
-                  : !isConnected
-                  ? "bg-orange-500 border-orange-700"
-                  : walletUSDT > 0
-                  ? "border-main_border  bg-btn_green hover:scale-95 duration-300"
-                  : "cursor-not-allowed bg-red-500 border-red-700"
-              }`}
+              disabled={
+                isLoadingData || (isConnected ? walletUSDT <= 0 : false)
+              }
+              className={`gap-x-1 p-3 duration-300 text-center md:text-xl font-bold rounded-lg border-2 text-white w-full 
+                ${
+                  isLoadingData
+                    ? "bg-blue-500  border-blue-700 cursor-progress"
+                    : !isConnected
+                    ? "bg-orange-500 hover:bg-orange-600 border-orange-700 cursor-pointer"
+                    : walletUSDT > 0
+                    ? "border-main_border bg-btn_green hover:scale-95 duration-300"
+                    : "cursor-not-allowed bg-red-500 border-red-700"
+                }`}
             >
-              {!isConnected
-                ? "Connect Your Wallet to Buy"
-                : isLoadingData
+              {isLoadingData
                 ? "Waiting..."
+                : !isConnected
+                ? "Connect Your Wallet to Buy"
                 : walletUSDT > 0
                 ? "Buy Now"
-                : "not enough USDT to Buy"}
+                : "Not enough USDT to Buy"}
             </button>
+
             <div className="text-brown_34 my-3 font-bold md:text-xl text-sm">
               ...or send desired amount of crypto to this address:
             </div>
@@ -399,6 +412,7 @@ export const TokenIncrease = () => {
                 type="text"
                 defaultValue={USDT_ADDRESS}
                 className="bg-transparent text-brown_34 px-1 py-2 w-full outline-none truncate"
+                readOnly
               />
               {/* Copy Button */}
               <button

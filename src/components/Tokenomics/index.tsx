@@ -14,7 +14,7 @@ export const Tokenomics = () => {
         <h1 className="text-txt_brown  text-2xl lg:text-5xl font-bold lg:mt-16 w-full">
           Tokenomics
         </h1>
-        <div className="bg-[url('/Vectors/wood-sign.svg')] lg:bg-[url('/Vectors/wood-sign.webp')] bg-contain bg-no-repeat mt-5 lg:mt-12 h-56 lg:h-80 mx-auto bg-center">
+        <div className="bg-[url('/Vectors/wood-sign-sm.webp')] lg:bg-[url('/Vectors/wood-sign.webp')] bg-contain bg-no-repeat mt-5 lg:mt-12 h-56 lg:h-80 mx-auto bg-center">
           <div className="sr-only">Total Supply: 1,000,000,000 Camel Coins</div>
         </div>
         <div className="flex flex-wrap gap-5 justify-center mt-7 lg:mt-14">
@@ -64,7 +64,7 @@ export const Tokenomics = () => {
           src="/Vectors/camel-tokenomics.svg"
           className="object-contain w-full absolute left-0"
         />
-        <section className="relative py-10 pt-28 md:mt-36 xl:pt-[400px]">
+        <section className="relative py-10 mt-[20%] md:mt-[25%]">
           <span
             id="who-is"
             className=" absolute top-9 lg:top-[200px] sr-only "
@@ -72,7 +72,7 @@ export const Tokenomics = () => {
           <h1 className="text-txt_brown text-2xl lg:text-5xl font-bold ">
             Who is Crypto Camel?
           </h1>
-          <p className="text-brown_34 my-5">
+          <p className="text-brown_34 mt-5">
             <span className="text-[#9D4500]">
               <span className="text-[#9D4500] pr-1">Crypto Camel</span>
             </span>
@@ -93,12 +93,10 @@ export const Tokenomics = () => {
               digital dunes?
             </span>
           </p>
-          <a
-            href="/Whitepaper.pdf"
-            download
-            className="rounded-full hover:scale-90 duration-300 text-sm px-8 py-3 shadow-xl bg-[url('/Vectors/btn-bg.svg')] bg-cover bg-no-repeat text-white"
-          >
-            Read the Whitepaper
+          <a href="/Whitepaper.pdf" download>
+            <button className="rounded-full hover:scale-90 duration-300 text-sm px-8 py-3 shadow-xl bg-[url('/Vectors/btn-bg.svg')] bg-cover bg-no-repeat text-white mt-3">
+              Read the Whitepaper
+            </button>
           </a>
         </section>
         <Image

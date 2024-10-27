@@ -84,13 +84,20 @@ const Header = () => {
             : "transform -translate-y-2 py-6 lg:py-5"
         }`}
       >
-        <Link href="/">
+        <Link href="/" className="flex items-center gap-[2px]">
           <Image
-            src="/Logos/header_logo.webp"
+            src="/Logos/coin-logo.webp"
             alt="header_logo"
             width={150}
-            height={50}
-            className="w-24 lg:w-36"
+            height={150}
+            className="w-[50px] animate-spin"
+          />
+          <Image
+            src="/Logos/logo-text.webp"
+            alt="header_logo"
+            width={150}
+            height={150}
+            className="w-24 lg:w-28 h-5 "
           />
         </Link>
         <nav className="md:mx-auto hidden lg:flex flex-wrap gap-10 items-center text-base justify-center font-bold">

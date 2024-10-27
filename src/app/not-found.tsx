@@ -1,3 +1,4 @@
+import { FlipCoin } from "@/components/FlipCoin";
 import Link from "next/link";
 
 export default function NotFound() {
@@ -12,6 +13,7 @@ export default function NotFound() {
       >
         back to Main Page
       </Link>
+      <FlipCoin />
     </div>
   );
 }

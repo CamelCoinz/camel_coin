@@ -24,9 +24,14 @@ const config: Config = {
           "0%": { transform: "scale(0.5)" },
           "50%": { transform: "scale(1)" },
         },
+        spin: {
+          "0%": { transform: "rotateY(0deg)" },
+          "50%": { transform: "rotateY(360deg)" },
+        },
       },
       animation: {
         zoom: "zoom 0.5s ease-in-out",
+        spin: "spin 2s linear;",
       },
     },
   },
