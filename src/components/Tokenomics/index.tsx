@@ -2,6 +2,7 @@ import React from "react";
 import Container from "../Container";
 import Image from "next/image";
 import { TokenBox } from "./TokenBox";
+import Link from "next/link";
 
 export const Tokenomics = () => {
   return (
@@ -94,10 +95,19 @@ export const Tokenomics = () => {
             </span>
           </p>
           <a href="/Whitepaper.pdf" download>
-            <button className="rounded-full hover:scale-90 duration-300 text-sm px-8 py-3 shadow-xl bg-[url('/Vectors/btn-bg.svg')] bg-cover bg-no-repeat text-white mt-3">
+            <button className="rounded-full hover:scale-90 duration-300 text-xs lg:text-sm px-4 lg:px-8 py-3 shadow-xl bg-[url('/Vectors/btn-bg.svg')] bg-cover bg-no-repeat text-white mt-3">
               Read the Whitepaper
             </button>
           </a>
+          <Link
+            href="https://etherscan.io/token/0x3277843Dea9f4ec6359C6598F127482C67081311"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <button className="rounded-full hover:scale-90 duration-300 text-xs lg:text-sm px-10 lg:px-16 ml-2 py-3 shadow-xl bg-[url('/Vectors/blue_btn.png')] bg-cover bg-no-repeat text-white mt-3">
+              CONTRACT
+            </button>
+          </Link>
         </section>
         <Image
           alt="me"

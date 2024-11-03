@@ -34,15 +34,11 @@ export const ConnectWallet = () => {
           }
           openConnectModal?.();
         }}
-        disabled={isConnecting}
+        disabled={isConnected}
         className="flex gap-x-1 p-2 lg:p-3 w-fit place-self-end rounded-lg border-2 border-main_border  bg-btn_green "
       >
         <Image src="/Vectors/wallet.webp" alt="wallet" width={25} height={25} />
-        {isConnecting ? (
-          "Connecting..."
-        ) : (
-          <span className="lg:block hidden">Connect Wallet</span>
-        )}
+        <span className="lg:block hidden">Connect Wallet</span>
       </button>
     );
   }

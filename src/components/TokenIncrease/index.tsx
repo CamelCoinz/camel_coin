@@ -11,9 +11,16 @@ import Swal from "sweetalert2";
 import { ethers } from "ethers";
 import { useEthersSigner } from "./useSigner";
 
+interface ProgressBarProps {
+  currentAmount: number;
+  goalAmount: number;
+}
+
 const USDT_ADDRESS = "0x968f8AAF19A02Cca7c06d4F0672Fb076A59408BA"; // USDT contract address
 
 const EXCHANGE_RATE = 100000;
+const currentAmount = 30000;
+const goalAmount = 1250000;
 
 export const TokenIncrease = () => {
   const [camelCoinValue, setCamelCoinValue] = useState("");
@@ -168,6 +175,8 @@ export const TokenIncrease = () => {
   const handleBuyCoin = () =>
     !isLoadingData && (isConnected ? sendUSDT() : openConnectModal?.());
 
+  const progress = Math.min((currentAmount / goalAmount) * 100, 100).toFixed(2);
+
   return (
     <div className="bg-[url('/Vectors/desert.webp')] bg-cover bg-no-repeat w-100   relative flex justify-center py-9">
       <span
@@ -182,23 +191,32 @@ export const TokenIncrease = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 mt-8 gap-12">
           <div className="flex flex-col-reverse lg:flex-col">
             <Countdown />
-            <div className="flex gap-5 my-9 justify-start">
-              <div className="flex">
-                <Image
-                  width={25}
-                  height={25}
-                  className="w-6 h-6 object-contain"
-                  alt="camel-coins"
-                  src="/icons/money.svg"
-                />
-                <div className="block mb-1 text-xl w-32 font-bold text-brown_34">
-                  USD raised: $0 / $
+
+            <div className="py-4 rounded-full w-full max-w-md">
+              <div className="block mb-1 lg:text-xl   font-bold text-brown_34  w-full">
+                <div className="flex">
+                  <Image
+                    width={25}
+                    height={25}
+                    className="w-6 h-6 object-contain"
+                    alt="camel-coins"
+                    src="/icons/money.svg"
+                  />
+                  USD raised:
+                </div>
+                <div className="lg:text-2xl font-bold">
+                  ${currentAmount.toLocaleString()} / $
+                  {goalAmount.toLocaleString()}
                 </div>
               </div>
-              <div className="bg-white w-56 md:w-full h-6 rounded-full">
-                <div className="bg-[#6B3200] w-24 md:w-48 h-6 rounded-full text-white text-end pr-10 md:pr-14 text-xs py-1">
-                  34%
-                </div>
+              <div className="relative w-full h-6 bg-white rounded-full mt-2">
+                <div
+                  className="absolute top-0 bg-[#6B3200] left-0 h-full bg-brown-600 rounded-l-full"
+                  style={{ width: `${progress}%` }}
+                />
+                <span className="absolute top-0 left-1/2 transform -translate-x-1/2 text-txt_brown font-bold">
+                  {progress}%
+                </span>
               </div>
             </div>
             <Image
@@ -213,14 +231,14 @@ export const TokenIncrease = () => {
             <div className="grid grid-cols-2 gap-2 lg:gap-7">
               <div>
                 <label
-                  htmlFor="zip-input"
-                  className="block mb-1 text-sm md:text-lg font-bold text-brown_34"
+                  htmlFor="select_currency"
+                  className="block mb-1 text-xs md:text-lg font-bold text-brown_34"
                 >
                   Select currency to spend:
                 </label>
                 <div className="relative">
                   <label className="sr-only" htmlFor="USDT">
-                    First name:
+                    USDT
                   </label>
                   <select
                     id="USDT"
@@ -257,14 +275,14 @@ export const TokenIncrease = () => {
               </div>
               <div>
                 <label
-                  htmlFor="zip-input"
-                  className="block mb-1  text-sm md:text-lg font-bold text-brown_34"
+                  htmlFor="PAYMENT"
+                  className="block mb-1  text-xs md:text-lg font-bold text-brown_34"
                 >
                   Select payment method:
                 </label>
                 <div className="relative">
                   <label className="sr-only" htmlFor="ETH">
-                    First name:
+                    ETH:
                   </label>
                   <select
                     id="ETH"
@@ -346,7 +364,7 @@ export const TokenIncrease = () => {
                   htmlFor="to_get"
                   className="block mb-1 text-sm md:text-lg font-bold text-brown_34"
                 >
-                  $CAMEL you get:
+                  $CMEL you get:
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none">
@@ -374,7 +392,7 @@ export const TokenIncrease = () => {
               </div>
             </div>
             <div className="text-brown_34 my-3 font-bold md:text-xl text-sm">
-              Buy $CAMEL tokens now:
+              Buy $CMEL tokens now:
             </div>
             <button
               onClick={handleBuyCoin}
