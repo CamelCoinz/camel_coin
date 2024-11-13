@@ -45,7 +45,7 @@ export const Footer = () => {
             </Link>
             <Link
               target="_blank"
-              href="https://www.facebook.com/CryptoCamel"
+              href="https://www.facebook.com/profile.php?id=61567362917244&mibextid=ZbWKwL"
               className="bg-[url('/Vectors/facebook.webp')] hover:scale-90 duration-300 cursor-pointer text-xs lg:text-xl w-44 h-10 lg:w-80 lg:h-20 bg-cover bg-no-repeat flex gap-x-2 justify-center items-center text-[#7C3B1D] font-bold"
             >
               <Image
